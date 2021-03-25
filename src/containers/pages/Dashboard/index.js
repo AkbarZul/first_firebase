@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addDataToAPI, getDataFromAPI } from "../../../config/redux/action";
+import { addDataToAPI, getDataFromAPI, updateDataAPI } from "../../../config/redux/action";
 import "./Dasboard.scss";
 
 class Dashboard extends Component {
@@ -8,6 +8,8 @@ class Dashboard extends Component {
     title: "",
     content: "",
     date: "",
+    textButton: "SIMPAN",
+    noteId: '',
   };
 
   componentDidMount() {
@@ -19,8 +21,8 @@ class Dashboard extends Component {
   //   }
 
   handleSavaNotes = () => {
-    const { title, content } = this.state;
-    const { saveNotes } = this.props;
+    const { title, content, textButton, noteId } = this.state;
+    const { saveNotes, updateNotes } = this.props;
     const userData = JSON.parse(localStorage.getItem("userData"));
     const data = {
       title: title,
@@ -28,7 +30,12 @@ class Dashboard extends Component {
       date: new Date().getTime(),
       userId: userData.uid,
     };
-    saveNotes(data);
+    if(textButton === 'SIMPAN'){
+        saveNotes(data);
+    } else {
+        data.noteId = noteId
+        updateNotes(data)
+    }
     console.log(data);
   };
 
@@ -38,9 +45,28 @@ class Dashboard extends Component {
     });
   };
 
+  updateNotes = (note) => {
+    console.log(note);
+    this.setState({
+      title: note.data.title,
+      content: note.data.content,
+      textButton: "UPDATE",
+      noteId: note.id
+    });
+  };
+
+  cancelUpdate = () => {
+    this.setState({
+      title: "",
+      content: "",
+      textButton: "SIMPAN",
+    });
+  };
+
   render() {
-    const { title, content, date } = this.state;
+    const { title, content, date, textButton } = this.state;
     const { notes } = this.props;
+    const { updateNotes, cancelUpdate } = this;
     console.log("notes", notes);
     return (
       <div className="container">
@@ -57,16 +83,31 @@ class Dashboard extends Component {
             value={content}
             onChange={(e) => this.onInputChange(e, "content")}
           ></textarea>
-          <button onClick={this.handleSavaNotes} className="save-btn">
-            simpan
-          </button>
+          <div className="action-wrapper">
+            {textButton === "UPDATE" ? (
+              <button
+                onClick={this.handleSavaNotes}
+                onClick={cancelUpdate}
+                className="save-btn cancel"
+              >
+                cancel
+              </button>
+            ) : <div/>}
+            <button onClick={this.handleSavaNotes} className="save-btn">
+              {textButton}
+            </button>
+          </div>
         </div>
         <hr />
         {notes.length > 0 ? (
           <>
             {notes.map((note) => {
               return (
-                <div className="card-content" key={note.id}>
+                <div
+                  className="card-content"
+                  key={note.id}
+                  onClick={() => updateNotes(note)}
+                >
                   <p className="title">{note.data.title}</p>
                   <p className="date">{note.data.date}</p>
                   <p className="content">{note.data.content}</p>
@@ -88,6 +129,7 @@ const reduxState = (state) => ({
 const reduxDispatch = (dispatch) => ({
   saveNotes: (data) => dispatch(addDataToAPI(data)),
   getNotes: (data) => dispatch(getDataFromAPI(data)),
+  updateNotes: (data) => dispatch(updateDataAPI(data)),
 });
 
 export default connect(reduxState, reduxDispatch)(Dashboard);
