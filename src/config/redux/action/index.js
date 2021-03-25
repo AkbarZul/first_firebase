@@ -1,4 +1,4 @@
-import firebase from "../../firebase";
+import firebase, {database} from "../../firebase";
 
 export const actionUserName = () => (dispatch) => {
   // return (dispatch) => {
@@ -39,13 +39,14 @@ export const loginUserApi = (data) => (dispatch) => {
         const dataUser = {
           email: user.user.email,
           uid: user.user.uid,
-          emailVerified: user.user.emailVerified
+          emailVerified: user.user.emailVerified,
+          refreshToken: user.user.refreshToken,
         }
         console.log("success ", user);
         dispatch({ type: "CHANGE_LOADING", value: false });
         dispatch({ type: "CHANGE_ISLOGIN", value: true });
         dispatch({ type: "CHANGE_USER", value: dataUser });
-        resolve(true)
+        resolve(dataUser)
       })
       .catch((error) => {
         var errorCode = error.code;
@@ -57,3 +58,11 @@ export const loginUserApi = (data) => (dispatch) => {
       });
   })
 };
+
+export const addDataToAPI = (data) => (dispatch) => {
+  database.ref('notes/' + data.userId).push({
+   title: data.title,
+   content: data.content,
+   date: data.date,
+  });
+}

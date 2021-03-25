@@ -32,7 +32,7 @@ class Login extends Component {
       password,
     }).catch(err => err)
     if(user){
-        console.log("ini hasil firebase login");
+        console.log("ini hasil firebase login", user);
         this.setState({
           email: "",
           password: "",
