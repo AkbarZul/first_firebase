@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import "./Register.scss";
-import firebase from '../../../config/firebase';
+import Button from "../../../components/atoms/Button";
+import { connect } from 'react-redux';
+import { registerUserApi } from '../../../config/redux/action';
 
 class Register extends Component {
   state = {
     email: "",
     password: "",
+    
   };
 
   handleChangeText = (e) => {
@@ -24,18 +27,10 @@ class Register extends Component {
     // console.log(this.state.password);
     const {email, password} = this.state;
     console.log("berhasil", email, password);
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log("ini hasil firebase", user);
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-
-        console.log('ini error', errorCode, errorMessage);
-      });
+    this.props.registerAPI({
+      email,
+      password,
+    })
   };
 
   render() {
@@ -57,9 +52,7 @@ class Register extends Component {
             type="password"
             onChange={this.handleChangeText}
           />
-          <button onClick={this.handleRegisterSubmit} className="btn">
-            Register
-          </button>
+          <Button onClick={this.handleRegisterSubmit} title="Register" loading={this.props.isLoading} />
           {/* <button>Go To Dashboard</button> */}
         </div>
       </div>
@@ -67,4 +60,14 @@ class Register extends Component {
   }
 }
 
-export default Register;
+// ambil state global
+const reduxState = (state) => ({
+  isLoading: state.isLoading
+})
+
+// merubah action
+const reduxDispatch = (dispatch) => ({
+  registerAPI: (data) => dispatch(registerUserApi(data))
+})
+
+export default connect(reduxState, reduxDispatch)(Register);
