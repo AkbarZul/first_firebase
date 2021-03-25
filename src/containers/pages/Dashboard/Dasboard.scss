@@ -63,6 +63,7 @@
     box-shadow: 4px 3px 9px rgba(0, 0, 0, 0.1);
     margin-bottom: 16px;
     transition: all ease 0.35s;
+    position: relative;
     &:hover{
         cursor: pointer;
         transform: translateY(-2px);
@@ -81,5 +82,22 @@
     .content {
         margin-top: 20px;
         font-size: 14px;
+    }
+    .delete-btn {
+        width: 30px;
+        height: 30px;
+        background: red;
+        border-radius: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: white;
+        position: absolute;
+        top: -15px;
+        right: -15px;
+        &:hover {
+            cursor: pointer;
+        }
     }
 }

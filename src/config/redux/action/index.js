@@ -103,3 +103,10 @@ export const updateDataAPI = (data) => (dispatch) => {
     });
   })
 }
+
+export const deleteDataAPI = (data) => (dispatch) => {
+  const urlNotes = database.ref(`notes/${data.userId}/${data.noteId}`);
+  return new Promise((resolve, reject) => {
+    urlNotes.remove();
+  })
+}
