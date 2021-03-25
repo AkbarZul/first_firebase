@@ -22,15 +22,21 @@ class Register extends Component {
     });
   };
 
-  handleRegisterSubmit = () => {
+  handleRegisterSubmit = async () => {
     // console.log(this.state.email);
     // console.log(this.state.password);
     const {email, password} = this.state;
     console.log("berhasil", email, password);
-    this.props.registerAPI({
+    const user = await this.props.registerAPI({
       email,
       password,
-    })
+    }).catch(err => err)
+    if(user){
+      this.setState({
+        email: '',
+        password: '',
+      })
+    }
   };
 
   render() {
@@ -44,6 +50,7 @@ class Register extends Component {
             placeholder="email"
             type="text"
             onChange={this.handleChangeText}
+            value={this.state.email}
           />
           <input
             className="input"
@@ -51,6 +58,7 @@ class Register extends Component {
             placeholder="password"
             type="password"
             onChange={this.handleChangeText}
+            value={this.state.password}
           />
           <Button onClick={this.handleRegisterSubmit} title="Register" loading={this.props.isLoading} />
           {/* <button>Go To Dashboard</button> */}
