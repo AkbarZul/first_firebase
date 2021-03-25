@@ -66,3 +66,23 @@ export const addDataToAPI = (data) => (dispatch) => {
    date: data.date,
   });
 }
+
+export const getDataFromAPI = (userId) => (dispatch) => {
+  const urlNotes = database.ref('notes/' + userId);
+  return new Promise((resolve, reject) => {
+    urlNotes.on('value', function(snapshot) {
+      // updateStarCount(postElement, snapshot.val());
+      console.log("get data: ", snapshot.val());
+      // manipulasi data
+      const data = [];
+      Object.keys(snapshot.val()).map(key => {
+        data.push({
+          id: key,
+          data: snapshot.val()[key]
+        })
+      })
+      dispatch({type: 'GET_NOTES', value: data})
+      resolve(snapshot.val())
+    })
+  })
+}
