@@ -33,6 +33,8 @@ class Login extends Component {
     }).catch(err => err)
     if(user){
         console.log("ini hasil firebase login", user);
+
+        localStorage.setItem('userData', JSON.stringify(user))
         this.setState({
           email: "",
           password: "",

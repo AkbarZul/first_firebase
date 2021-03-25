@@ -9,6 +9,11 @@ class Dashboard extends Component {
     content: "",
     date: "",
   };
+
+  componentDidMount() {
+    const userData = localStorage.getItem('userData')
+    console.log("dashboard", JSON.parse(userData))
+  }
   handleSavaNotes = () => {
     const { title, content } = this.state;
     const {saveNotes} = this.props
