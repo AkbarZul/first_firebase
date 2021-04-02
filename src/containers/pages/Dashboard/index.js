@@ -76,9 +76,10 @@ class Dashboard extends Component {
 
   render() {
     const { title, content, date, textButton } = this.state;
-    const { notes } = this.props;
+    const { notes, userData } = this.props;
     const { updateNotes, cancelUpdate, deleteNotes } = this;
     console.log("notes", notes);
+    console.log("ini user data", userData);
     return (
       <div className="container">
         <div className="input-form">
