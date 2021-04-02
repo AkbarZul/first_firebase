@@ -44,6 +44,7 @@ class Register extends Component {
       <div className="auth-container">
         <div className="auth-card">
           <p className="auth-title">Register Page</p>
+          <p>{this.props.err}</p>
           <input
             className="input"
             id="email"
@@ -70,7 +71,8 @@ class Register extends Component {
 
 // ambil state global
 const reduxState = (state) => ({
-  isLoading: state.isLoading
+  isLoading: state.isLoading,
+  err: state.err,
 })
 
 // merubah action

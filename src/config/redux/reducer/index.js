@@ -3,7 +3,9 @@ const initialState = {
     isLogin: false,
     isLoading: false,
     user: {},
-    notes: []
+    notes: [],
+    err: '',
+    verif: '',
   }
   
   const reducer = (state = initialState, action) => {
@@ -35,6 +37,18 @@ const initialState = {
       return {
         ...state,
         notes: action.value
+      }
+    }
+    if(action.type === 'CHANGE_ERR') {
+      return {
+        ...state,
+        err: action.value
+      }
+    }
+    if(action.type === 'CHANGE_VERIF') {
+      return {
+        ...state,
+        verif: action.value
       }
     }
     return state

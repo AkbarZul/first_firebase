@@ -46,11 +46,13 @@ class Login extends Component {
   };
 
   render() {
-    // console.log(this.props.popupProps)
+    console.log(this.props.verif)
     return (
       <div className="auth-container">
         <div className="auth-card">
           <p className="auth-title">Login Page</p>
+          <p>{this.props.err}</p>
+          <p>{this.props.verif}</p>
           <input
             className="input"
             id="email"
@@ -82,7 +84,9 @@ class Login extends Component {
 // ambil state global
 // ambil state global
 const reduxState = (state) => ({
-    isLoading: state.isLoading
+    isLoading: state.isLoading,
+    err: state.err,
+    verif: state.verif,
   })
   
   // merubah action

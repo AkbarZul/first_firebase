@@ -128,7 +128,7 @@ class Dashboard extends Component {
               );
             })}
           </>
-        ) : null}
+        ) : <p>Halaman kosong bos</p>}
       </div>
     );
   }
